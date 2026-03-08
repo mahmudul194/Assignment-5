@@ -180,3 +180,24 @@ function searchIssues(query) {
             showLoading(false);
         });
 }
+
+function fetchSingleIssue(id) {
+    openModal();
+    modalLoader.classList.remove('hidden');
+    modalContent.classList.add('hidden');
+
+    fetch(`${API_BASE_URL}/issue/${id}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            populateModalData(data.data);
+            modalLoader.classList.add('hidden');
+            modalContent.classList.remove('hidden');
+        })
+        .catch(error => {
+            console.error('Failed to fetch issue details:', error);
+            closeModal();
+        });
+}
