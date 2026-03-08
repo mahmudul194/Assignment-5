@@ -36,3 +36,56 @@ const modalDescription = document.getElementById('modal-description');
 const modalAssignee = document.getElementById('modal-assignee');
 let modalPriorityBadge = document.getElementById('modal-priority-badge');
 
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true' && window.location.hash !== '#login') {
+        loginPage.classList.add('hidden');
+        mainPage.classList.remove('hidden');
+
+        
+        if (!window.location.hash) {
+            history.replaceState(null, '', '#dashboard');
+        }
+
+        fetchIssues(); 
+    } else {
+        history.replaceState(null, '', '#login');
+    }
+    
+    loginForm.addEventListener('submit', handleLogin);
+
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            currentFilter = e.target.dataset.filter;
+            updateTabsUI(e.target);
+
+            showLoading(true);
+            setTimeout(() => {
+                renderIssues();
+                showLoading(false);
+            }, 500); 
+        });
+    });
+
+     const handleSearch = debounce((e) => searchIssues(e.target.value), 300);
+    searchInput.addEventListener('input', handleSearch);
+    searchInputMobile.addEventListener('input', handleSearch);
+
+    // Modal Close
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', closeModal);
+    });
+
+    // Close modal on click outside
+    modal.addEventListener('click', (e) => {
+        // e.target could be modal or the inner flex container (.min-h-screen)
+        if (e.target === modal || e.target.classList.contains('min-h-screen')) {
+            closeModal();
+        }
+    });
+
+    // Handle Browser Back/Forward buttons
+    window.addEventListener('popstate', handlePopState);
+});
