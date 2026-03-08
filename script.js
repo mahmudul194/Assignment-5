@@ -155,3 +155,28 @@ function fetchIssues() {
             showLoading(false);
         });
 }
+
+
+function searchIssues(query) {
+    if (!query.trim()) {
+        fetchIssues(); 
+        return;
+    }
+
+     showLoading(true);
+    fetch(`${API_BASE_URL}/issues/search?q=${encodeURIComponent(query)}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            allIssues = data.data;
+            renderIssues();
+        })
+        .catch(error => {
+            console.error('Failed to search issues:', error);
+        })
+        .finally(() => {
+            showLoading(false);
+        });
+}
