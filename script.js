@@ -264,7 +264,7 @@ function createIssueCard(issue) {
     div.className = `bg-white rounded-xl shadow-sm border border-slate-200 border-t-4 ${borderColorClass} p-5 hover:border-slate-300 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 cursor-pointer flex flex-col h-full`;
 
     
-    div.addEventListener('click', () => fetchSingleIssue(issue.id || issue._id)); // handle both DB ID formats if they vary
+    div.addEventListener('click', () => fetchSingleIssue(issue.id || issue._id));
 
     div.innerHTML = `
         <div class="flex justify-between items-start mb-3">
@@ -288,3 +288,38 @@ function createIssueCard(issue) {
     return div;
 }
 
+function openModal() {
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Restore background scrolling
+}
+
+function populateModalData(issue) {
+    const isClosed = issue.status.toLowerCase() === 'closed';
+
+    modalTitle.textContent = issue.title;
+
+    // Status Badge Setup
+    modalStatusBadge.textContent = issue.status;
+    if (isClosed) {
+        modalStatusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200';
+    } else {
+        modalStatusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700 border border-emerald-200';
+    }
+
+    modalAuthor.textContent = issue.author;
+    modalDate.textContent = new Date(issue.createdAt).toLocaleDateString();
+
+    modalDescription.innerHTML = (issue.description || '').replace(/\n/g, '<br>');
+
+    modalLabels.innerHTML = issue.labels ? issue.labels.map(l => getLabelBadge(l, true)).join('') : '';
+
+    modalAssignee.textContent = issue.assignee || 'Unassigned';
+    modalPriorityBadge.outerHTML = getPriorityBadge(issue.priority, true);
+    // Relink DOM reference since outerHTML overwrote the element
+    modalPriorityBadge = document.getElementById('modal-priority-badge');
+}
