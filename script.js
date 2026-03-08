@@ -290,12 +290,12 @@ function createIssueCard(issue) {
 
 function openModal() {
     modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = 'hidden'; 
 }
 
 function closeModal() {
     modal.classList.add('hidden');
-    document.body.style.overflow = 'auto'; // Restore background scrolling
+    document.body.style.overflow = 'auto'; 
 }
 
 function populateModalData(issue) {
@@ -303,7 +303,7 @@ function populateModalData(issue) {
 
     modalTitle.textContent = issue.title;
 
-    // Status Badge Setup
+    
     modalStatusBadge.textContent = issue.status;
     if (isClosed) {
         modalStatusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200';
@@ -320,6 +320,8 @@ function populateModalData(issue) {
 
     modalAssignee.textContent = issue.assignee || 'Unassigned';
     modalPriorityBadge.outerHTML = getPriorityBadge(issue.priority, true);
-    // Relink DOM reference since outerHTML overwrote the element
+    
     modalPriorityBadge = document.getElementById('modal-priority-badge');
 }
+
+
