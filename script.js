@@ -325,3 +325,34 @@ function populateModalData(issue) {
 }
 
 
+function getPriorityBadge(priority, forModal = false) {
+    const p = priority ? priority.toLowerCase() : 'low';
+    let colorClass = '';
+
+    if (p === 'low') colorClass = 'bg-slate-100 text-slate-600 border-slate-200';
+    if (p === 'medium') colorClass = 'bg-amber-100 text-amber-700 border-amber-200';
+    if (p === 'high') colorClass = 'bg-rose-100 text-rose-700 border-rose-200';
+
+    const id = forModal ? 'id="modal-priority-badge"' : '';
+    return `<span ${id} class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${colorClass}">${priority}</span>`;
+}
+
+function getLabelBadge(label, forModal = false) {
+    const l = label.toLowerCase();
+    let bg = 'bg-slate-100';
+    let text = 'text-slate-700';
+    let border = 'border-slate-200';
+
+    if (l.includes('bug')) {
+        bg = 'bg-red-50'; text = 'text-red-600'; border = 'border-red-200';
+    } else if (l.includes('help')) {
+        bg = 'bg-orange-50'; text = 'text-orange-600'; border = 'border-orange-200';
+    } else if (l.includes('enhancement')) {
+        bg = 'bg-teal-50'; text = 'text-teal-600'; border = 'border-teal-200';
+    }
+
+    const sizeClass = forModal ? 'text-xs px-3 py-1' : 'text-[10px] px-2 py-0.5';
+
+    return `<span class="rounded-full font-semibold uppercase tracking-wide border ${bg} ${text} ${border} ${sizeClass}">${escapeHTML(label)}</span>`;
+}
+
