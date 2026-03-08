@@ -188,7 +188,9 @@ function fetchSingleIssue(id) {
 
     fetch(`${API_BASE_URL}/issue/${id}`)
         .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok){
+                throw new Error('Network response was not ok');
+            } 
             return response.json();
         })
         .then(data => {
@@ -200,4 +202,27 @@ function fetchSingleIssue(id) {
             console.error('Failed to fetch issue details:', error);
             closeModal();
         });
+}
+
+
+function renderIssues() {
+    issuesContainer.innerHTML = '';
+
+    const filtered = allIssues.filter(issue => {
+        if (currentFilter === 'all') return true;
+        return issue.status.toLowerCase() === currentFilter;
+    });
+
+    issueCount.textContent = filtered.length;
+
+    if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+    } else {
+        emptyState.classList.add('hidden');
+
+        filtered.forEach(issue => {
+            const card = createIssueCard(issue);
+            issuesContainer.appendChild(card);
+        });
+    }
 }
