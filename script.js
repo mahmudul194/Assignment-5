@@ -226,3 +226,25 @@ function renderIssues() {
         });
     }
 }
+
+function updateTabsUI(activeTabBtn) {
+    tabBtns.forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'border-transparent');
+        btn.classList.add('border', 'border-slate-200', 'bg-white', 'text-slate-600', 'hover:text-white', 'hover:bg-indigo-600', 'hover:border-indigo-600');
+    });
+    activeTabBtn.classList.add('bg-indigo-600', 'text-white');
+    activeTabBtn.classList.remove('border', 'border-slate-200', 'bg-white', 'text-slate-600', 'hover:text-white', 'hover:bg-indigo-600', 'hover:border-indigo-600');
+}
+
+function showLoading(isLoading) {
+    if (isLoading) {
+        loadingSpinner.classList.remove('hidden');
+        loadingSpinner.classList.add('flex');
+        issuesContainer.classList.add('hidden');
+        emptyState.classList.add('hidden');
+    } else {
+        loadingSpinner.classList.add('hidden');
+        loadingSpinner.classList.remove('flex');
+        issuesContainer.classList.remove('hidden');
+    }
+}
