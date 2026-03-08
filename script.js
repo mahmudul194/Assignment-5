@@ -356,3 +356,21 @@ function getLabelBadge(label, forModal = false) {
     return `<span class="rounded-full font-semibold uppercase tracking-wide border ${bg} ${text} ${border} ${sizeClass}">${escapeHTML(label)}</span>`;
 }
 
+function escapeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.innerText = str;
+    return div.innerHTML;
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
