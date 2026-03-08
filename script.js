@@ -73,19 +73,42 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', handleSearch);
     searchInputMobile.addEventListener('input', handleSearch);
 
-    // Modal Close
+    
     closeBtns.forEach(btn => {
         btn.addEventListener('click', closeModal);
     });
 
-    // Close modal on click outside
+    
     modal.addEventListener('click', (e) => {
-        // e.target could be modal or the inner flex container (.min-h-screen)
+        
         if (e.target === modal || e.target.classList.contains('min-h-screen')) {
             closeModal();
         }
     });
 
-    // Handle Browser Back/Forward buttons
+    
     window.addEventListener('popstate', handlePopState);
 });
+
+
+function handleLogin(e) {
+    e.preventDefault();
+    const user = usernameInput.value.trim();
+    const pass = passwordInput.value.trim();
+
+    if (user === DEMO_USER && pass === DEMO_PASS) {
+        loginError.classList.add('hidden');
+        loginPage.classList.add('hidden');
+        mainPage.classList.remove('hidden');
+
+        
+        sessionStorage.setItem('isLoggedIn', 'true');
+        history.pushState(null, '', '#dashboard');
+
+        
+        fetchIssues();
+    } else {
+        loginError.classList.remove('hidden');
+    }
+}
+
